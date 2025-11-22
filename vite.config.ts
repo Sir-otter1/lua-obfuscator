@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/lua-obfuscator/',
   build: {
-    outDir: 'dist',
+    outDir: '.',
     assetsDir: 'assets',
     sourcemap: false,
     minify: 'esbuild',
@@ -18,5 +18,6 @@ export default defineConfig({
         }
       }
     }
-  }
+  },
+  publicDir: 'public'
 })
