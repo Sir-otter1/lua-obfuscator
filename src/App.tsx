@@ -1,8 +1,9 @@
-import { useState } from "react"
-import { Upload, Shield, Code, Download, Settings, Zap, Lock, Eye, EyeOff } from "lucide-react"
-import { Button } from "./components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/ui/card"
-import { luaObfuscator, ObfuscationOptions } from "./lib/obfuscator"
+import { useState } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
+import { Button } from './components/ui/button'
+import { Tooltip } from './components/ui/tooltip'
+import { Upload, Download, Shield, Zap, Lock, Eye, EyeOff, Code, Settings } from 'lucide-react'
+import { luaObfuscator, ObfuscationOptions } from './lib/obfuscator'
 
 function App() {
   const [code, setCode] = useState(`-- Sample Lua Script
@@ -182,6 +183,7 @@ end`)
                     className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
                   />
                   <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Variable Names</span>
+                  <Tooltip text="Renames variables with random alphanumeric names" />
                 </label>
                 
                 <label className="flex items-center space-x-3 cursor-pointer group">
@@ -192,6 +194,7 @@ end`)
                     className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
                   />
                   <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">String Obfuscation</span>
+                  <Tooltip text="Converts strings to character codes and concatenations" />
                 </label>
                 
                 <label className="flex items-center space-x-3 cursor-pointer group">
@@ -202,6 +205,7 @@ end`)
                     className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
                   />
                   <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Control Flow</span>
+                  <Tooltip text="Adds redundant conditions and dummy loops" />
                 </label>
                 
                 <label className="flex items-center space-x-3 cursor-pointer group">
@@ -212,6 +216,7 @@ end`)
                     className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
                   />
                   <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Function Names</span>
+                  <Tooltip text="Renames function definitions and calls with random names" />
                 </label>
                 
                 <label className="flex items-center space-x-3 cursor-pointer group">
@@ -222,6 +227,7 @@ end`)
                     className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
                   />
                   <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Number Obfuscation</span>
+                  <Tooltip text="Converts numbers to mathematical expressions like (5+3)" />
                 </label>
                 
                 <label className="flex items-center space-x-3 cursor-pointer group">
@@ -232,6 +238,7 @@ end`)
                     className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
                   />
                   <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Table Obfuscation</span>
+                  <Tooltip text="Obfuscates table keys and access patterns" />
                 </label>
                 
                 <label className="flex items-center space-x-3 cursor-pointer group">
@@ -242,6 +249,7 @@ end`)
                     className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
                   />
                   <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Operator Obfuscation</span>
+                  <Tooltip text="Replaces operators with function calls" />
                 </label>
                 
                 <label className="flex items-center space-x-3 cursor-pointer group">
@@ -252,6 +260,7 @@ end`)
                     className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
                   />
                   <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Junk Code</span>
+                  <Tooltip text="Inserts meaningless but valid code to confuse analysis" />
                 </label>
                 
                 <label className="flex items-center space-x-3 cursor-pointer group">
@@ -262,6 +271,7 @@ end`)
                     className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
                   />
                   <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Dead Code Insertion</span>
+                  <Tooltip text="Adds unused code that never executes" />
                 </label>
                 
                 <label className="flex items-center space-x-3 cursor-pointer group">
@@ -272,6 +282,7 @@ end`)
                     className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
                   />
                   <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Compact Output</span>
+                  <Tooltip text="Removes extra whitespace and formatting" />
                 </label>
               </div>
             </div>
@@ -299,6 +310,7 @@ end`)
                       className="rounded border-gray-600 text-red-500 focus:ring-red-500 focus:ring-offset-0 bg-gray-700"
                     />
                     <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Anti-Debug</span>
+                    <Tooltip text="Detects and crashes debugging attempts" />
                   </label>
                   
                   <label className="flex items-center space-x-3 cursor-pointer group">
@@ -309,6 +321,7 @@ end`)
                       className="rounded border-gray-600 text-red-500 focus:ring-red-500 focus:ring-offset-0 bg-gray-700"
                     />
                     <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Runtime Checks</span>
+                    <Tooltip text="Validates code integrity during execution" />
                   </label>
                   
                   <label className="flex items-center space-x-3 cursor-pointer group">
@@ -319,6 +332,7 @@ end`)
                       className="rounded border-gray-600 text-red-500 focus:ring-red-500 focus:ring-offset-0 bg-gray-700"
                     />
                     <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Code Encryption</span>
+                    <Tooltip text="XOR encryption of entire code payload" />
                   </label>
                   
                   <label className="flex items-center space-x-3 cursor-pointer group">
@@ -329,6 +343,7 @@ end`)
                       className="rounded border-gray-600 text-red-500 focus:ring-red-500 focus:ring-offset-0 bg-gray-700"
                     />
                     <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Self-Modifying</span>
+                    <Tooltip text="Reconstructs code in memory during execution" />
                   </label>
                   
                   <label className="flex items-center space-x-3 cursor-pointer group">
@@ -339,6 +354,7 @@ end`)
                       className="rounded border-gray-600 text-red-500 focus:ring-red-500 focus:ring-offset-0 bg-gray-700"
                     />
                     <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Environment Detection</span>
+                    <Tooltip text="Validates execution environment (Roblox vs standard Lua)" />
                   </label>
                   
                   <label className="flex items-center space-x-3 cursor-pointer group">
@@ -349,6 +365,7 @@ end`)
                       className="rounded border-gray-600 text-orange-500 focus:ring-orange-500 focus:ring-offset-0 bg-gray-700"
                     />
                     <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Control Flow Flattening</span>
+                    <Tooltip text="Breaks code into dispatcher-based structure" />
                   </label>
                   
                   <label className="flex items-center space-x-3 cursor-pointer group">
@@ -359,6 +376,7 @@ end`)
                       className="rounded border-gray-600 text-orange-500 focus:ring-orange-500 focus:ring-offset-0 bg-gray-700"
                     />
                     <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Opaque Predicates</span>
+                    <Tooltip text="Adds conditions that always evaluate the same way" />
                   </label>
                   
                   <label className="flex items-center space-x-3 cursor-pointer group">
@@ -369,6 +387,7 @@ end`)
                       className="rounded border-gray-600 text-orange-500 focus:ring-orange-500 focus:ring-offset-0 bg-gray-700"
                     />
                     <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Virtual Machine</span>
+                    <Tooltip text="Simulates bytecode execution for protection" />
                   </label>
                   
                   <label className="flex items-center space-x-3 cursor-pointer group">
@@ -379,6 +398,7 @@ end`)
                       className="rounded border-gray-600 text-orange-500 focus:ring-orange-500 focus:ring-offset-0 bg-gray-700"
                     />
                     <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">String Splitting</span>
+                    <Tooltip text="Breaks strings into concatenated parts" />
                   </label>
                   
                   <label className="flex items-center space-x-3 cursor-pointer group">
@@ -389,6 +409,7 @@ end`)
                       className="rounded border-gray-600 text-orange-500 focus:ring-orange-500 focus:ring-offset-0 bg-gray-700"
                     />
                     <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Dead Branches</span>
+                    <Tooltip text="Adds unreachable code branches" />
                   </label>
                 </div>
               )}
