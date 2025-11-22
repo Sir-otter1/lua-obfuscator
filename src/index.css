@@ -2,14 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CSS Variables for theming */
+:root {
+  --theme-primary: #3b82f6;
+  --theme-secondary: #1e40af;
+  --theme-background: #0f172a;
+  --theme-surface: #1e293b;
+  --theme-border: #334155;
+  --theme-text: #f1f5f9;
+  --theme-text-secondary: #94a3b8;
+  --theme-accent: #60a5fa;
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
+  0%, 100% { box-shadow: 0 0 20px var(--theme-primary, 59, 130, 246, 0.5); }
+  50% { box-shadow: 0 0 40px var(--theme-primary, 59, 130, 246, 0.8); }
 }
 
 .animate-float {
@@ -35,17 +47,17 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #1f2937;
+  background: var(--theme-surface, #1f2937);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4b5563;
+  background: var(--theme-border, #4b5563);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+  background: var(--theme-text-secondary, #6b7280);
 }
 
 /* Glass morphism effect */

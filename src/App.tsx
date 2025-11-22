@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
 import { Button } from './components/ui/button'
 import { Tooltip } from './components/ui/tooltip'
-import { Upload, Download, Shield, Zap, Lock, Eye, EyeOff, Code, Settings } from 'lucide-react'
+import { Upload, Download, Shield, Zap, Lock, Eye, EyeOff, Code, Settings, Palette } from 'lucide-react'
 import { luaObfuscator, ObfuscationOptions } from './lib/obfuscator'
+import { themes, applyTheme, Theme } from './lib/themes'
 
 function App() {
   const [code, setCode] = useState(`-- Sample Lua Script
@@ -19,26 +20,13 @@ end
 
 local result = calculateSum(5, 10)
 greet("World")
+print("Sum:", result)`)
 
--- Table example
-local person = {
-    name = "John",
-    age = 25,
-    greet = function(self)
-        print("My name is " .. self.name)
-    end
-}
-
-person:greet()
-
--- Loop example
-for i = 1, 5 do
-    print("Count: " .. i)
-end`)
   const [obfuscatedCode, setObfuscatedCode] = useState("")
   const [fileName, setFileName] = useState("")
   const [isProcessing, setIsProcessing] = useState(false)
   const [showAdvanced, setShowAdvanced] = useState(false)
+  const [currentTheme, setCurrentTheme] = useState<Theme>(themes.dark)
   const [options, setOptions] = useState<ObfuscationOptions>({
     obfuscateVariables: true,
     obfuscateStrings: true,
@@ -67,6 +55,11 @@ end`)
     stringSplitting: false,
     deadBranchInsertion: false
   })
+
+  // Apply theme when it changes
+  useEffect(() => {
+    applyTheme(currentTheme)
+  }, [currentTheme])
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -152,6 +145,25 @@ end`)
             <div className="flex items-center text-sm text-gray-400">
               <Shield className="h-4 w-4 mr-1" />
               Universal Compatibility
+            </div>
+          </div>
+          
+          {/* Theme Selector */}
+          <div className="flex items-center justify-center mt-4">
+            <div className="flex items-center space-x-3 bg-gray-800/50 backdrop-blur-sm rounded-lg px-4 py-2 border border-gray-700">
+              <Palette className="w-4 h-4 text-gray-400" />
+              <label className="text-sm text-gray-300">Theme:</label>
+              <select
+                value={currentTheme.name}
+                onChange={(e) => setCurrentTheme(themes[e.target.value])}
+                className="bg-gray-700 border border-gray-600 rounded px-3 py-1 text-sm text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                {Object.values(themes).map((theme) => (
+                  <option key={theme.name} value={theme.name}>
+                    {theme.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
