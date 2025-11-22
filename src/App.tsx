@@ -108,7 +108,7 @@ print("Sum:", result)`)
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className={`min-h-screen bg-gradient-to-br ${currentTheme.gradient}`}>
       <div className="absolute inset-0 bg-black opacity-50"></div>
       
       {/* Animated background elements */}

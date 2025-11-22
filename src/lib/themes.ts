@@ -8,6 +8,7 @@ export interface Theme {
   text: string
   textSecondary: string
   accent: string
+  gradient: string
 }
 
 export const themes: Record<string, Theme> = {
@@ -20,7 +21,8 @@ export const themes: Record<string, Theme> = {
     border: '#334155',
     text: '#f1f5f9',
     textSecondary: '#94a3b8',
-    accent: '#60a5fa'
+    accent: '#60a5fa',
+    gradient: 'from-slate-900 via-purple-900 to-slate-900'
   },
   purple: {
     name: 'Purple',
@@ -31,7 +33,8 @@ export const themes: Record<string, Theme> = {
     border: '#4a3f6b',
     text: '#f3e8ff',
     textSecondary: '#c4b5fd',
-    accent: '#a78bfa'
+    accent: '#a78bfa',
+    gradient: 'from-purple-900 via-violet-900 to-purple-900'
   },
   green: {
     name: 'Green',
@@ -42,7 +45,8 @@ export const themes: Record<string, Theme> = {
     border: '#2d5a47',
     text: '#ecfdf5',
     textSecondary: '#a7f3d0',
-    accent: '#34d399'
+    accent: '#34d399',
+    gradient: 'from-green-900 via-emerald-900 to-green-900'
   },
   red: {
     name: 'Red',
@@ -53,7 +57,8 @@ export const themes: Record<string, Theme> = {
     border: '#5a2d2d',
     text: '#fef2f2',
     textSecondary: '#fca5a5',
-    accent: '#f87171'
+    accent: '#f87171',
+    gradient: 'from-red-900 via-rose-900 to-red-900'
   },
   blue: {
     name: 'Blue',
@@ -64,7 +69,8 @@ export const themes: Record<string, Theme> = {
     border: '#2d4a6b',
     text: '#f0f9ff',
     textSecondary: '#bae6fd',
-    accent: '#38bdf8'
+    accent: '#38bdf8',
+    gradient: 'from-blue-900 via-sky-900 to-blue-900'
   },
   orange: {
     name: 'Orange',
@@ -75,7 +81,32 @@ export const themes: Record<string, Theme> = {
     border: '#6b4d2d',
     text: '#fff7ed',
     textSecondary: '#fed7aa',
-    accent: '#fb923c'
+    accent: '#fb923c',
+    gradient: 'from-orange-900 via-amber-900 to-orange-900'
+  },
+  pink: {
+    name: 'Pink',
+    primary: '#ec4899',
+    secondary: '#db2777',
+    background: '#2e1a2e',
+    surface: '#3d1f3d',
+    border: '#5a2d4a',
+    text: '#fdf2f8',
+    textSecondary: '#f9a8d4',
+    accent: '#f472b6',
+    gradient: 'from-pink-900 via-rose-900 to-pink-900'
+  },
+  cyan: {
+    name: 'Cyan',
+    primary: '#06b6d4',
+    secondary: '#0891b2',
+    background: '#0e2e2e',
+    surface: '#1a3d3d',
+    border: '#2d5a5a',
+    text: '#f0fdfa',
+    textSecondary: '#a7f3d0',
+    accent: '#22d3ee',
+    gradient: 'from-cyan-900 via-teal-900 to-cyan-900'
   }
 }
 
@@ -89,4 +120,11 @@ export function applyTheme(theme: Theme) {
   root.style.setProperty('--theme-text', theme.text)
   root.style.setProperty('--theme-text-secondary', theme.textSecondary)
   root.style.setProperty('--theme-accent', theme.accent)
+  root.style.setProperty('--theme-gradient', theme.gradient)
+  
+  // Update background gradient
+  const body = document.querySelector('body') as HTMLElement
+  if (body) {
+    body.className = body.className.replace(/from-\S+\s+via-\S+\s+to-\S+/, theme.gradient)
+  }
 }
