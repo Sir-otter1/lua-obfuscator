@@ -1,14 +1,31 @@
 interface ObfuscationOptions {
+  // Basic Obfuscation
   obfuscateVariables: boolean
   obfuscateStrings: boolean
   obfuscateControlFlow: boolean
   insertDeadCode: boolean
   compactCode: boolean
+  
+  // Enhanced Basic Features
+  obfuscateFunctions: boolean
+  obfuscateNumbers: boolean
+  obfuscateTables: boolean
+  obfuscateOperators: boolean
+  addJunkCode: boolean
+  
+  // Advanced Protection
   antiDebug: boolean
   runtimeChecks: boolean
   encryptCode: boolean
   selfModifying: boolean
   environmentDetection: boolean
+  
+  // New Advanced Features
+  controlFlowFlattening: boolean
+  opaquePredicates: boolean
+  virtualMachineProtection: boolean
+  stringSplitting: boolean
+  deadBranchInsertion: boolean
 }
 
 class LuaObfuscator {
@@ -361,7 +378,229 @@ end
     return robloxPatterns.some(pattern => pattern.test(code))
   }
 
-  public obfuscate(code: string, options: ObfuscationOptions): string {
+  // Enhanced Basic Obfuscation Methods
+  private obfuscateFunctions(code: string): string {
+    // Obfuscate function names and definitions
+    return code.replace(/\bfunction\s+([a-zA-Z_][a-zA-Z0-9_]*)/g, (match, funcName) => {
+      if (this.robloxGlobals.has(funcName) || this.luaKeywords.has(funcName)) {
+        return match
+      }
+      const newName = this.generateObfuscatedName('f')
+      return `function ${newName}`
+    })
+  }
+
+  private obfuscateNumbers(code: string): string {
+    // Convert numbers to mathematical expressions
+    return code.replace(/\b(\d+)\b/g, (_, num) => {
+      const n = parseInt(num)
+      if (n === 0) return '(0)'
+      if (n === 1) return '(1)'
+      
+      // Create mathematical expressions
+      const expressions = [
+        `(${Math.floor(n/2)}+${Math.ceil(n/2)})`,
+        `(${n-1}+1)`,
+        `(${n*2}/2)`,
+        `(tonumber("${n}"))`,
+        `(${n}^1)`,
+      ]
+      return expressions[Math.floor(Math.random() * expressions.length)]
+    })
+  }
+
+  private obfuscateTables(code: string): string {
+    // Obfuscate table constructors and access
+    return code
+      .replace(/\{([^}]*)\}/g, (match: string, content: string) => {
+        if (content.trim()) {
+          const obfuscatedContent = content.replace(/([a-zA-Z_][a-zA-Z0-9_]*)\s*=/g, (fullMatch: string, key: string) => {
+            if (!this.robloxGlobals.has(key) && !this.luaKeywords.has(key)) {
+              return `["${this.obfuscateString(key)}"]=`
+            }
+            return fullMatch
+          })
+          return `{${obfuscatedContent}}`
+        }
+        return match
+      })
+      .replace(/\.([a-zA-Z_][a-zA-Z0-9_]*)/g, (match, prop) => {
+        if (!this.robloxGlobals.has(prop) && !this.luaKeywords.has(prop)) {
+          return `["${this.obfuscateString(prop)}"]`
+        }
+        return match
+      })
+  }
+
+  private obfuscateOperators(code: string): string {
+    // Replace operators with function calls
+    const operatorMap: Record<string, string> = {
+      '+': 'function(a,b)return a+b end',
+      '-': 'function(a,b)return a-b end',
+      '*': 'function(a,b)return a*b end',
+      '/': 'function(a,b)return a/b end',
+      '%': 'function(a,b)return a%b end',
+      '^': 'function(a,b)return a^b end',
+    }
+
+    let result = code
+    Object.entries(operatorMap).forEach(([op]) => {
+      const funcName = this.generateObfuscatedName('op')
+      result = result.replace(
+        new RegExp(`\\s*\\${op}\\s*`, 'g'),
+        ` (${funcName}(${funcName}, `
+      )
+    })
+    return result
+  }
+
+  private addJunkCode(code: string): string {
+    const junkPatterns = [
+      `local ${this.generateObfuscatedName()} = ${Math.random()}`,
+      `if (${Math.random()} > 0.5) then local ${this.generateObfuscatedName()} = true end`,
+      `local ${this.generateObfuscatedName()} = {${this.generateObfuscatedName()} = ${Math.floor(Math.random() * 100)}}`,
+      `while false do ${this.generateObfuscatedName()}() end`,
+      `do local ${this.generateObfuscatedName()} = nil end`,
+    ]
+
+    const lines = code.split('\n')
+    const result: string[] = []
+    
+    lines.forEach(line => {
+      result.push(line)
+      if (Math.random() > 0.7 && line.trim() && !line.trim().startsWith('--')) {
+        result.push('  ' + junkPatterns[Math.floor(Math.random() * junkPatterns.length)])
+      }
+    })
+    
+    return result.join('\n')
+  }
+
+  // Advanced Obfuscation Methods
+  private generateControlFlowFlattening(code: string): string {
+    // Flatten control flow using switch-like structures
+    const flattenedCode = []
+    const stateVar = this.generateObfuscatedName('state')
+    const dispatcherVar = this.generateObfuscatedName('dispatch')
+    
+    flattenedCode.push(`local ${stateVar} = 0`)
+    flattenedCode.push(`local ${dispatcherVar} = {`)
+    
+    // Split code into blocks and create dispatcher
+    const blocks = code.split(/\n(?=\s*(if|for|while|function|local|return|end))/)
+    blocks.forEach((block, index) => {
+      if (block.trim()) {
+        flattenedCode.push(`  [${index}] = function()`)
+        flattenedCode.push(`    ${block}`)
+        flattenedCode.push(`    ${stateVar} = ${stateVar} + 1`)
+        flattenedCode.push(`  end,`)
+      }
+    })
+    
+    flattenedCode.push(`}`)
+    flattenedCode.push(`while ${stateVar} < #${dispatcherVar} do`)
+    flattenedCode.push(`  ${dispatcherVar}[${stateVar}]()`)
+    flattenedCode.push(`end`)
+    
+    return flattenedCode.join('\n')
+  }
+
+  private generateOpaquePredicates(): string {
+    const varName = this.generateObfuscatedName()
+    const predicates = [
+      `((${Math.random()} * 2 - 1) > 0 or true)`,
+      `((1 + 1) * 2 == 4 and true)`,
+      `(not false and true)`,
+      `(tonumber("1") == 1)`,
+      `(type("string") == "string")`,
+    ]
+    
+    return `
+-- Opaque predicates
+local ${varName} = function()
+  if ${predicates[Math.floor(Math.random() * predicates.length)]} then
+    return true
+  else
+    return true
+  end
+end
+if not ${varName}() then
+  error("Integrity check failed")
+end
+`
+  }
+
+  private generateVirtualMachineProtection(code: string): string {
+    // Simple VM-like protection using bytecode simulation
+    const vmVar = this.generateObfuscatedName('vm')
+    const pcVar = this.generateObfuscatedName('pc')
+    
+    // Convert code to simple bytecode representation
+    const instructions = this.generateBytecode(code)
+    
+    return `
+-- Virtual Machine Protection
+local ${vmVar} = {
+  pc = 1,
+  stack = {},
+  bytecode = ${JSON.stringify(instructions)}
+}
+
+local ${pcVar} = ${vmVar}.pc
+while ${pcVar} <= #${vmVar}.bytecode do
+  local instr = ${vmVar}.bytecode[${pcVar}]
+  if instr.op == "load" then
+    ${vmVar}.stack[#${vmVar}.stack + 1] = instr.val
+  elseif instr.op == "call" then
+    local func = ${vmVar}.stack[#${vmVar}.stack]
+    func()
+  elseif instr.op == "end" then
+    break
+  end
+  ${pcVar} = ${pcVar} + 1
+end
+`
+  }
+
+  private generateBytecode(code: string): any[] {
+    // Simple bytecode generation
+    return [
+      { op: "load", val: code },
+      { op: "call" },
+      { op: "end" }
+    ]
+  }
+
+  private generateStringSplitting(code: string): string {
+    // Split strings into multiple parts
+    return code.replace(/"([^"]+)"/g, (match, str) => {
+      if (str.length < 4) return match
+      
+      const parts = []
+      for (let i = 0; i < str.length; i += 2) {
+        parts.push(`"${str.substr(i, 2)}"`)
+      }
+      
+      return parts.join('..')
+    })
+  }
+
+  private generateDeadBranchInsertion(code: string): string {
+    // Insert dead branches that never execute
+    const deadBranch = `
+if (math.random(1, 100) > 1000) then
+  -- Dead branch - never executes
+  local ${this.generateObfuscatedName()} = function()
+    error("This should never execute")
+  end
+  ${this.generateObfuscatedName()}()
+end
+`
+    
+    return deadBranch + code
+  }
+
+  obfuscate(code: string, options: ObfuscationOptions): string {
     this.usedNames.clear()
 
     let obfuscatedCode = code
@@ -422,7 +661,28 @@ end
       obfuscatedCode = this.obfuscateControlFlow(obfuscatedCode)
     }
 
-    // Step 5: Dead code insertion (conservative for Roblox)
+    // Step 5: Enhanced Basic Obfuscation
+    if (options.obfuscateFunctions) {
+      obfuscatedCode = this.obfuscateFunctions(obfuscatedCode)
+    }
+    
+    if (options.obfuscateNumbers) {
+      obfuscatedCode = this.obfuscateNumbers(obfuscatedCode)
+    }
+    
+    if (options.obfuscateTables) {
+      obfuscatedCode = this.obfuscateTables(obfuscatedCode)
+    }
+    
+    if (options.obfuscateOperators) {
+      obfuscatedCode = this.obfuscateOperators(obfuscatedCode)
+    }
+    
+    if (options.addJunkCode) {
+      obfuscatedCode = this.addJunkCode(obfuscatedCode)
+    }
+
+    // Step 6: Dead code insertion (conservative for Roblox)
     if (options.insertDeadCode) {
       const lines = obfuscatedCode.split('\n')
       const obfuscatedLines: string[] = []
@@ -439,7 +699,28 @@ end
       obfuscatedCode = obfuscatedLines.join('\n')
     }
 
-    // Step 6: Advanced anti-deobfuscation techniques
+    // Step 7: Advanced Protection Techniques
+    if (options.controlFlowFlattening) {
+      obfuscatedCode = this.generateControlFlowFlattening(obfuscatedCode)
+    }
+    
+    if (options.opaquePredicates) {
+      obfuscatedCode = this.generateOpaquePredicates() + obfuscatedCode
+    }
+    
+    if (options.virtualMachineProtection) {
+      obfuscatedCode = this.generateVirtualMachineProtection(obfuscatedCode)
+    }
+    
+    if (options.stringSplitting) {
+      obfuscatedCode = this.generateStringSplitting(obfuscatedCode)
+    }
+    
+    if (options.deadBranchInsertion) {
+      obfuscatedCode = this.generateDeadBranchInsertion(obfuscatedCode)
+    }
+
+    // Step 8: Advanced anti-deobfuscation techniques
     if (options.encryptCode) {
       obfuscatedCode = this.generateEncryptionWrapper(obfuscatedCode)
     }

@@ -44,11 +44,27 @@ end`)
     obfuscateControlFlow: true,
     insertDeadCode: false,
     compactCode: true,
+    
+    // Enhanced Basic Features
+    obfuscateFunctions: true,
+    obfuscateNumbers: false,
+    obfuscateTables: false,
+    obfuscateOperators: false,
+    addJunkCode: false,
+    
+    // Advanced Protection
     antiDebug: false,
     runtimeChecks: false,
     encryptCode: false,
     selfModifying: false,
-    environmentDetection: false
+    environmentDetection: false,
+    
+    // New Advanced Features
+    controlFlowFlattening: false,
+    opaquePredicates: false,
+    virtualMachineProtection: false,
+    stringSplitting: false,
+    deadBranchInsertion: false
   })
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,6 +207,56 @@ end`)
                 <label className="flex items-center space-x-3 cursor-pointer group">
                   <input
                     type="checkbox"
+                    checked={options.obfuscateFunctions}
+                    onChange={(e) => setOptions({...options, obfuscateFunctions: e.target.checked})}
+                    className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
+                  />
+                  <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Function Names</span>
+                </label>
+                
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={options.obfuscateNumbers}
+                    onChange={(e) => setOptions({...options, obfuscateNumbers: e.target.checked})}
+                    className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
+                  />
+                  <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Number Obfuscation</span>
+                </label>
+                
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={options.obfuscateTables}
+                    onChange={(e) => setOptions({...options, obfuscateTables: e.target.checked})}
+                    className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
+                  />
+                  <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Table Obfuscation</span>
+                </label>
+                
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={options.obfuscateOperators}
+                    onChange={(e) => setOptions({...options, obfuscateOperators: e.target.checked})}
+                    className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
+                  />
+                  <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Operator Obfuscation</span>
+                </label>
+                
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={options.addJunkCode}
+                    onChange={(e) => setOptions({...options, addJunkCode: e.target.checked})}
+                    className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
+                  />
+                  <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Junk Code</span>
+                </label>
+                
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
                     checked={options.insertDeadCode}
                     onChange={(e) => setOptions({...options, insertDeadCode: e.target.checked})}
                     className="rounded border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-0 bg-gray-700"
@@ -273,6 +339,56 @@ end`)
                       className="rounded border-gray-600 text-red-500 focus:ring-red-500 focus:ring-offset-0 bg-gray-700"
                     />
                     <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Environment Detection</span>
+                  </label>
+                  
+                  <label className="flex items-center space-x-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={options.controlFlowFlattening}
+                      onChange={(e) => setOptions({...options, controlFlowFlattening: e.target.checked})}
+                      className="rounded border-gray-600 text-orange-500 focus:ring-orange-500 focus:ring-offset-0 bg-gray-700"
+                    />
+                    <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Control Flow Flattening</span>
+                  </label>
+                  
+                  <label className="flex items-center space-x-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={options.opaquePredicates}
+                      onChange={(e) => setOptions({...options, opaquePredicates: e.target.checked})}
+                      className="rounded border-gray-600 text-orange-500 focus:ring-orange-500 focus:ring-offset-0 bg-gray-700"
+                    />
+                    <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Opaque Predicates</span>
+                  </label>
+                  
+                  <label className="flex items-center space-x-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={options.virtualMachineProtection}
+                      onChange={(e) => setOptions({...options, virtualMachineProtection: e.target.checked})}
+                      className="rounded border-gray-600 text-orange-500 focus:ring-orange-500 focus:ring-offset-0 bg-gray-700"
+                    />
+                    <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Virtual Machine</span>
+                  </label>
+                  
+                  <label className="flex items-center space-x-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={options.stringSplitting}
+                      onChange={(e) => setOptions({...options, stringSplitting: e.target.checked})}
+                      className="rounded border-gray-600 text-orange-500 focus:ring-orange-500 focus:ring-offset-0 bg-gray-700"
+                    />
+                    <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">String Splitting</span>
+                  </label>
+                  
+                  <label className="flex items-center space-x-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={options.deadBranchInsertion}
+                      onChange={(e) => setOptions({...options, deadBranchInsertion: e.target.checked})}
+                      className="rounded border-gray-600 text-orange-500 focus:ring-orange-500 focus:ring-offset-0 bg-gray-700"
+                    />
+                    <span className="text-sm font-medium text-gray-300 group-hover:text-gray-200 transition-colors">Dead Branches</span>
                   </label>
                 </div>
               )}
